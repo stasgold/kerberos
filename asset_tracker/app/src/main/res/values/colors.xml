@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background">#0D1117</color>
+    <color name="primary">#00BCD4</color>
+    <color name="on_primary">#000000</color>
+    <color name="stop_button">#E53935</color>
+    <color name="text_primary">#ECEFF1</color>
+    <color name="text_secondary">#78909C</color>
+    <color name="divider">#30363D</color>
+    <color name="surface">#161B22</color>
+    <!-- Kerberos launcher icon background -->
+    <color name="kerberos_blue">#1565C0</color>
+    <!-- Chipolo POP tag colors (matches Flutter app palette) -->
+    <color name="tag_red">#E53935</color>
+    <color name="tag_black">#424242</color>
+    <color name="tag_white">#EEEEEE</color>
+    <color name="tag_yellow">#FFD600</color>
+    <color name="tag_green">#43A047</color>
+    <color name="tag_blue">#1E88E5</color>
+    <color name="tag_orange">#FF6D00</color>
+    <color name="tag_pink">#EC407A</color>
+</resources>
