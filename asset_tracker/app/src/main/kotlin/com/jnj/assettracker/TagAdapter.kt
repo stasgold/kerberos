@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit
 class TagAdapter(
     private val onRename: (TagEntry) -> Unit,
     private val onColorPick: (TagEntry) -> Unit,
+    private val onRemove: (TagEntry) -> Unit,
 ) : RecyclerView.Adapter<TagAdapter.ViewHolder>() {
 
     private var items: List<TagEntry> = emptyList()
@@ -61,6 +62,7 @@ class TagAdapter(
 
         b.btnRename.setOnClickListener { onRename(tag) }
         b.btnColor.setOnClickListener  { onColorPick(tag) }
+        b.btnDelete.setOnClickListener { onRemove(tag) }
     }
 
     override fun getItemCount(): Int = items.size

@@ -84,11 +84,22 @@
             android:id="@+id/btnColor"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginEnd="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Set tag color"
             android:padding="8dp"
             android:src="@drawable/ic_palette"
+            android:tint="@color/text_secondary" />
+
+        <!-- Delete / remove -->
+        <ImageButton
+            android:id="@+id/btnDelete"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Remove tag"
+            android:padding="8dp"
+            android:src="@drawable/ic_delete"
             android:tint="@color/text_secondary" />
 
     </LinearLayout>

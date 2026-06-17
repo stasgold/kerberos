@@ -8,4 +8,8 @@
     <string name="label_no_tags">No tags detected</string>
     <string name="hint_tag_name">Tag name</string>
     <string name="hint_lab_id">e.g. F2-LAB-A</string>
+    <string name="label_network_port">Network Port</string>
+    <string name="label_alive_interval">Alive Interval (sec)</string>
+    <string name="label_filter_pop">Only Chipolo POP tags</string>
+    <string name="label_settings">Settings</string>
 </resources>

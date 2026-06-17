@@ -3,6 +3,8 @@ package com.jnj.assettracker
 import android.Manifest
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothManager
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -45,12 +47,9 @@ import java.net.NetworkInterface
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        /**
-         * Lab IDs displayed in the dropdown.
-         * MUST exactly match the keys in config.py LABS dict on the aggregator
-         * (AT-SRD-001 §3.3 Configuration Note).
-         */
         val LAB_IDS = listOf("F1-LAB-A", "F1-LAB-B", "F2-LAB-A", "F2-LAB-B", "F3-LAB-A")
+        val PORT_OPTIONS = listOf(80, 443, 3000, 5000, 8000, 8080, 8888)
+        val ALIVE_INTERVAL_OPTIONS = listOf(10, 30, 40, 50, 60, 80, 120)
     }
 
     private lateinit var binding: ActivityMainBinding
@@ -93,8 +92,10 @@ class MainActivity : AppCompatActivity() {
         setupLabDropdown()
         setupButtons()
         setupTagList()
+        setupSettings()
         restoreLastLabSelection()
         TagRepository.loadFromPrefs(this)
+        restoreSettings()
         requestBlePermissions()
     }
 
@@ -117,6 +118,7 @@ class MainActivity : AppCompatActivity() {
         tagAdapter = TagAdapter(
             onRename    = { showRenameDialog(it) },
             onColorPick = { showColorDialog(it) },
+            onRemove    = { showRemoveDialog(it) },
         )
         binding.rvTags.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
@@ -204,6 +206,15 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
+    private fun showRemoveDialog(entry: TagEntry) {
+        AlertDialog.Builder(this)
+            .setTitle("Remove Tag")
+            .setMessage("Remove \"${entry.displayName}\" from known connections?")
+            .setPositiveButton("Remove") { _, _ -> TagRepository.remove(entry.address) }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
     private fun setupLabDropdown() {
         val adapter = ArrayAdapter(
             this,
@@ -238,6 +249,62 @@ class MainActivity : AppCompatActivity() {
             .edit().putString(WebServerService.PREF_LAB_ID, labId).apply()
     }
 
+    // ── Settings setup ─────────────────────────────────────────────────
+
+    private fun setupSettings() {
+        // Port spinner
+        val portAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item,
+            PORT_OPTIONS.map { it.toString() })
+        portAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerPort.adapter = portAdapter
+
+        // Alive interval spinner
+        val intervalAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item,
+            ALIVE_INTERVAL_OPTIONS.map { it.toString() })
+        intervalAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerAliveInterval.adapter = intervalAdapter
+
+        // POP filter toggle — apply immediately on change
+        binding.switchFilterPop.setOnCheckedChangeListener { _, isChecked ->
+            TagRepository.filterPopOnly = isChecked
+            getSharedPreferences(WebServerService.PREFS_NAME, MODE_PRIVATE)
+                .edit().putBoolean(WebServerService.PREF_FILTER_POP, isChecked).apply()
+        }
+    }
+
+    /** Restore saved settings from SharedPreferences into the UI. */
+    private fun restoreSettings() {
+        val prefs = getSharedPreferences(WebServerService.PREFS_NAME, MODE_PRIVATE)
+
+        val savedPort = prefs.getInt(WebServerService.PREF_PORT, WebServerService.DEFAULT_PORT)
+        val portIdx = PORT_OPTIONS.indexOf(savedPort).takeIf { it >= 0 } ?: 0
+        binding.spinnerPort.setSelection(portIdx)
+
+        val savedInterval = prefs.getInt(WebServerService.PREF_ALIVE_INTERVAL,
+            WebServerService.DEFAULT_ALIVE_INTERVAL)
+        val intervalIdx = ALIVE_INTERVAL_OPTIONS.indexOf(savedInterval).takeIf { it >= 0 }
+            ?: ALIVE_INTERVAL_OPTIONS.indexOf(60)
+        binding.spinnerAliveInterval.setSelection(intervalIdx.coerceAtLeast(0))
+
+        val filterPop = prefs.getBoolean(WebServerService.PREF_FILTER_POP, false)
+        binding.switchFilterPop.isChecked = filterPop
+        TagRepository.filterPopOnly = filterPop
+        TagRepository.TAG_ACTIVE_MS = savedInterval * 1_000L
+    }
+
+    /** Persist current spinner/switch values to prefs. */
+    private fun saveSettings() {
+        val port = PORT_OPTIONS[binding.spinnerPort.selectedItemPosition]
+        val interval = ALIVE_INTERVAL_OPTIONS[binding.spinnerAliveInterval.selectedItemPosition]
+        getSharedPreferences(WebServerService.PREFS_NAME, MODE_PRIVATE).edit()
+            .putInt(WebServerService.PREF_PORT, port)
+            .putInt(WebServerService.PREF_ALIVE_INTERVAL, interval)
+            .putBoolean(WebServerService.PREF_FILTER_POP, binding.switchFilterPop.isChecked)
+            .apply()
+        TagRepository.TAG_ACTIVE_MS = interval * 1_000L
+        TagRepository.filterPopOnly = binding.switchFilterPop.isChecked
+    }
+
     private fun setupButtons() {
         binding.btnStart.setOnClickListener {
             if (!checkBlePermissions()) {
@@ -264,6 +331,7 @@ class MainActivity : AppCompatActivity() {
     // ── Service control ───────────────────────────────────────────────────────
 
     private fun startScanService(labId: String) {
+        saveSettings()
         val intent = Intent(this, WebServerService::class.java).apply {
             putExtra(WebServerService.EXTRA_LAB_ID, labId)
         }
@@ -297,13 +365,32 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun updateNetworkInfo() {
         val ip = getLanIpAddress()
+        val port = getSharedPreferences(WebServerService.PREFS_NAME, MODE_PRIVATE)
+            .getInt(WebServerService.PREF_PORT, WebServerService.DEFAULT_PORT)
         if (ip != null) {
-            binding.tvLanIp.text = "LAN IP: $ip"
-            binding.tvEndpoint.text = "Endpoint: http://$ip:${LocalServer.PORT}/tags"
+            binding.tvLanIp.text = "LAN IP: $ip  📋"
+            binding.tvEndpoint.text = "Endpoint: http://$ip:$port/tags  📋"
         } else {
             binding.tvLanIp.text = "LAN IP: (not connected)"
             binding.tvEndpoint.text = "Endpoint: (not available)"
         }
+
+        binding.tvLanIp.setOnClickListener {
+            val currentIp = getLanIpAddress() ?: return@setOnClickListener
+            copyToClipboard("LAN IP", currentIp)
+        }
+        binding.tvEndpoint.setOnClickListener {
+            val currentIp = getLanIpAddress() ?: return@setOnClickListener
+            val currentPort = getSharedPreferences(WebServerService.PREFS_NAME, MODE_PRIVATE)
+                .getInt(WebServerService.PREF_PORT, WebServerService.DEFAULT_PORT)
+            copyToClipboard("Endpoint", "http://$currentIp:$currentPort/tags")
+        }
+    }
+
+    private fun copyToClipboard(label: String, text: String) {
+        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        clipboard.setPrimaryClip(ClipData.newPlainText(label, text))
+        Toast.makeText(this, "Copied: $text", Toast.LENGTH_SHORT).show()
     }
 
     /** Returns the device's IPv4 address on the current Wi-Fi network, or null. */

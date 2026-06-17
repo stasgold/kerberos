@@ -26,10 +26,10 @@ import org.json.JSONObject
  * NanoHTTPD binds to 0.0.0.0 by default, making the server reachable on
  * every network interface including Wi-Fi (APP-NF-07).
  */
-class LocalServer(private val labId: String) : NanoHTTPD(PORT) {
+class LocalServer(private val labId: String, port: Int = PORT) : NanoHTTPD(port) {
 
     companion object {
-        const val PORT = 8080
+        const val PORT = 80   // default port
         private const val MIME_JSON = "application/json"
     }
 

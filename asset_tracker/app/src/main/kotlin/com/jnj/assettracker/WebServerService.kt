@@ -43,6 +43,11 @@ class WebServerService : Service() {
 
         const val PREFS_NAME = "asset_tracker_prefs"
         const val PREF_LAB_ID = "last_lab_id"
+        const val PREF_PORT = "server_port"
+        const val PREF_ALIVE_INTERVAL = "alive_interval_sec"
+        const val PREF_FILTER_POP = "filter_pop_only"
+        const val DEFAULT_PORT = 80
+        const val DEFAULT_ALIVE_INTERVAL = 60
     }
 
     private var wakeLock: PowerManager.WakeLock? = null
@@ -50,6 +55,7 @@ class WebServerService : Service() {
     private var bleScanner: BleScanner? = null
     private var localServer: LocalServer? = null
     private var labId: String = "UNKNOWN"
+    private var serverPort: Int = DEFAULT_PORT
 
     // ── Service lifecycle ─────────────────────────────────────────────────────
 
@@ -74,6 +80,13 @@ class WebServerService : Service() {
             .edit()
             .putString(PREF_LAB_ID, labId)
             .apply()
+
+        // Read configurable settings
+        val prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+        serverPort = prefs.getInt(PREF_PORT, DEFAULT_PORT)
+        val aliveIntervalSec = prefs.getInt(PREF_ALIVE_INTERVAL, DEFAULT_ALIVE_INTERVAL)
+        TagRepository.TAG_ACTIVE_MS = aliveIntervalSec * 1_000L
+        TagRepository.filterPopOnly = prefs.getBoolean(PREF_FILTER_POP, false)
 
         // Promote to foreground immediately (must happen within 5 s on API 31+)
         // Pass foreground service type for Android 14+ enforcement (API 34).
@@ -102,10 +115,10 @@ class WebServerService : Service() {
         val btManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         bleScanner = BleScanner(btManager.adapter).also { it.start() }
 
-        // ── HTTP server on port 8080 ──────────────────────────────────────
+        // ── HTTP server on configured port ────────────────────────────────
         try {
-            localServer = LocalServer(labId).also { it.start() }
-            Log.i(TAG, "HTTP server started on port ${LocalServer.PORT} for lab=$labId")
+            localServer = LocalServer(labId, serverPort).also { it.start() }
+            Log.i(TAG, "HTTP server started on port $serverPort for lab=$labId")
         } catch (e: IOException) {
             Log.e(TAG, "Failed to start HTTP server: ${e.message}")
         }
@@ -150,7 +163,7 @@ class WebServerService : Service() {
         )
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Asset Tracker — $labId")
-            .setContentText("BLE scanning active  ·  HTTP :${LocalServer.PORT}")
+            .setContentText("BLE scanning active  ·  HTTP :$serverPort")
             .setSmallIcon(R.drawable.ic_notification)
             .setContentIntent(pendingIntent)
             .setOngoing(true)

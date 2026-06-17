@@ -37,7 +37,11 @@ data class TagEntry(
  */
 object TagRepository {
 
-    const val TAG_ACTIVE_MS = 10_000L
+    /** Alive window in ms — updated from Settings (default 60 s). */
+    var TAG_ACTIVE_MS = 60_000L
+
+    /** When true, only tags whose BLE name contains "POP" are shown. */
+    var filterPopOnly = false
 
     private const val PREFS_NAME = "tag_repository"
     private const val PREF_TAGS  = "tags_json"
@@ -74,20 +78,18 @@ object TagRepository {
         val cutoff = System.currentTimeMillis() - TAG_ACTIVE_MS
         return tags.values
             .filter { it.lastSeen >= cutoff }
+            .filter { !filterPopOnly || it.name.contains("POP", ignoreCase = true) }
             .sortedByDescending { it.rssi }
     }
 
     /**
-     * Returns ALL known tags — active ones first, then stale ones sorted by
-     * lastSeen descending. Used by the UI so tags are never lost on scan stop.
+     * Returns ALL known tags sorted by display name (case-insensitive).
+     * Applies POP filter when enabled. Used by the UI.
      */
     fun getAllTags(): List<TagEntry> {
-        val now = System.currentTimeMillis()
         return tags.values
-            .sortedWith(
-                compareByDescending<TagEntry> { now - it.lastSeen < TAG_ACTIVE_MS }
-                    .thenByDescending { it.lastSeen }
-            )
+            .filter { !filterPopOnly || it.name.contains("POP", ignoreCase = true) }
+            .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.displayName })
     }
 
     /** Serialize all tags to SharedPreferences. */
@@ -127,6 +129,9 @@ object TagRepository {
             }
         } catch (_: Exception) {}
     }
+
+    /** Removes a single tag by address. */
+    fun remove(address: String) { tags.remove(address) }
 
     /** Removes all stored tags. */
     fun clear() = tags.clear()
