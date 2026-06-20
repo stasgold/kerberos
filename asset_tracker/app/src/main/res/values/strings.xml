@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Kerberos</string>
+    <string name="header_title">Kerberos</string>
+    <string name="label_lab_id">LAB ASSIGNMENT</string>
+    <string name="label_output_mode">OUTPUT MODE</string>
+    <string name="label_aggregator">Aggregator</string>
+    <string name="label_web_service">Web Service</string>
+    <string name="label_aggregator_url">AGGREGATOR URL</string>
+    <string name="label_endpoint_url">ENDPOINT URL</string>
+    <string name="hint_aggregator_url">http://192.168.68.55:5000</string>
+    <string name="btn_start">▶  START</string>
+    <string name="btn_stop">■  STOP</string>
+    <string name="label_settings">SETTINGS</string>
+    <string name="label_filter_pop">Only Chipolo POP tags</string>
+    <string name="label_scan_s">SCAN (s)</string>
+    <string name="label_alive_s">ALIVE (s)</string>
+    <string name="label_push_s">PUSH (s)</string>
+    <string name="btn_view_log">View App Log</string>
+    <string name="label_active_tags">ACTIVE TAGS</string>
+    <string name="label_no_tags">No tags detected yet</string>
+    <string name="hint_tag_name">Tag name</string>
+    <string name="hint_lab_id">e.g. F2-LAB-A</string>
+    <!-- kept for compatibility -->
+    <string name="label_alive_interval">Alive Interval (sec)</string>
+</resources>

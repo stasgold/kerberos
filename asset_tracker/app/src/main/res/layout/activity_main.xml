@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- REDESIGNED LAYOUT — see requirements in task notes -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <!-- ══ HEADER (fixed) ══════════════════════════════════════════════ -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="36dp"
+        android:paddingBottom="14dp">
+
+        <!-- Title + version stacked left -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/header_title"
+                android:textColor="@color/text_primary"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:text="v1.0"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+
+        <!-- Status pill right-aligned -->
+        <TextView
+            android:id="@+id/tvScanStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_status_pill"
+            android:letterSpacing="0.05"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp"
+            android:text="● STOPPED"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- ══ SCROLLABLE BODY ══════════════════════════════════════════════ -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="28dp">
+
+            <!-- ── Lab Assignment ───────────────────────────────────────── -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                app:cardBackgroundColor="@color/surface"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/divider"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:letterSpacing="0.10"
+                        android:text="@string/label_lab_id"
+                        android:textAllCaps="true"
+                        android:textColor="@color/primary"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etLabId"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@drawable/bg_input_field"
+                        android:hint="@string/hint_lab_id"
+                        android:inputType="textCapCharacters"
+                        android:padding="12dp"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_secondary"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ── Output Mode ──────────────────────────────────────────── -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:cardBackgroundColor="@color/surface"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/divider"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:letterSpacing="0.10"
+                        android:text="@string/label_output_mode"
+                        android:textAllCaps="true"
+                        android:textColor="@color/primary"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <RadioGroup
+                        android:id="@+id/rgMode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.radiobutton.MaterialRadioButton
+                            android:id="@+id/rbAggregator"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="true"
+                            android:text="@string/label_aggregator"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp" />
+
+                        <com.google.android.material.radiobutton.MaterialRadioButton
+                            android:id="@+id/rbWebService"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/label_web_service"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp" />
+
+                    </RadioGroup>
+
+                    <!-- Aggregator URL (shown when aggregator mode) -->
+                    <LinearLayout
+                        android:id="@+id/layoutAggregatorUrl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="6dp"
+                            android:letterSpacing="0.08"
+                            android:text="@string/label_aggregator_url"
+                            android:textAllCaps="true"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="10sp" />
+
+                        <EditText
+                            android:id="@+id/etAggregatorUrl"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:background="@drawable/bg_input_field"
+                            android:fontFamily="monospace"
+                            android:hint="@string/hint_aggregator_url"
+                            android:inputType="textUri"
+                            android:padding="12dp"
+                            android:textColor="@color/text_primary"
+                            android:textColorHint="@color/text_secondary"
+                            android:textSize="13sp" />
+
+                    </LinearLayout>
+
+                    <!-- Web Service Endpoint (shown when web service mode) -->
+                    <LinearLayout
+                        android:id="@+id/layoutWebServiceUrl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="6dp"
+                            android:letterSpacing="0.08"
+                            android:text="@string/label_endpoint_url"
+                            android:textAllCaps="true"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="10sp" />
+
+                        <!-- [http://IP:]  [PORT]  [/tags] — only PORT is editable -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:background="@drawable/bg_input_field"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tvEndpointPrefix"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="monospace"
+                                android:paddingStart="12dp"
+                                android:text="http://--:"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="13sp" />
+
+                            <EditText
+                                android:id="@+id/etWebServicePort"
+                                android:layout_width="64dp"
+                                android:layout_height="match_parent"
+                                android:background="@null"
+                                android:fontFamily="monospace"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:text="8080"
+                                android:textColor="@color/text_primary"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="monospace"
+                                android:text="/tags"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ── Start / Stop ─────────────────────────────────────────── -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnStart"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:text="@string/btn_start"
+                    android:textColor="@color/on_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/primary"
+                    app:cornerRadius="10dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnStop"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
+                    android:text="@string/btn_stop"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/stop_button"
+                    app:cornerRadius="10dp" />
+
+            </LinearLayout>
+
+            <!-- ── Settings ─────────────────────────────────────────────── -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:cardBackgroundColor="@color/surface"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/divider"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:letterSpacing="0.10"
+                        android:text="@string/label_settings"
+                        android:textAllCaps="true"
+                        android:textColor="@color/primary"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <!-- Only Chipolo POP -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/label_filter_pop"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp" />
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switchFilterPop"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="8dp"
+                        android:background="@color/divider" />
+
+                    <!-- Intervals: Scan | Alive | Push (3 columns) -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="6dp"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:letterSpacing="0.06"
+                                android:text="@string/label_scan_s"
+                                android:textAllCaps="true"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="9sp" />
+
+                            <EditText
+                                android:id="@+id/etScanInterval"
+                                android:layout_width="match_parent"
+                                android:layout_height="44dp"
+                                android:layout_marginTop="4dp"
+                                android:background="@drawable/bg_input_field"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:text="10"
+                                android:textColor="@color/text_primary"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="3dp"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:letterSpacing="0.06"
+                                android:text="@string/label_alive_s"
+                                android:textAllCaps="true"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="9sp" />
+
+                            <EditText
+                                android:id="@+id/etAliveInterval"
+                                android:layout_width="match_parent"
+                                android:layout_height="44dp"
+                                android:layout_marginTop="4dp"
+                                android:background="@drawable/bg_input_field"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:text="60"
+                                android:textColor="@color/text_primary"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <!-- Push interval — hidden in web service mode -->
+                        <LinearLayout
+                            android:id="@+id/layoutPushInterval"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:letterSpacing="0.06"
+                                android:text="@string/label_push_s"
+                                android:textAllCaps="true"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="9sp" />
+
+                            <EditText
+                                android:id="@+id/etPushInterval"
+                                android:layout_width="match_parent"
+                                android:layout_height="44dp"
+                                android:layout_marginTop="4dp"
+                                android:background="@drawable/bg_input_field"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:text="30"
+                                android:textColor="@color/text_primary"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ── View Log button ──────────────────────────────────────── -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnViewLog"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/btn_view_log"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
+                app:cornerRadius="10dp"
+                app:strokeColor="@color/divider" />
+
+            <!-- ══ ACTIVE TAGS (inside scroll) ══════════════════════════ -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="18dp"
+                android:background="@color/divider" />
+
+            <TextView
+                android:id="@+id/tvTagsHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:letterSpacing="0.08"
+                android:paddingVertical="12dp"
+                android:text="@string/label_active_tags"
+                android:textAllCaps="true"
+                android:textColor="@color/primary"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvNoTags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingVertical="28dp"
+                android:text="@string/label_no_tags"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp"
+                android:visibility="visible" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvTags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:paddingBottom="8dp" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

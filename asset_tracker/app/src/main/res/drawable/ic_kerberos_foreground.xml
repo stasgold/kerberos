@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Foreground layer for the adaptive launcher icon.
+    The adaptive-icon foreground canvas is 108dp × 108dp but the guaranteed
+    visible "safe zone" is only the centre 66dp × 66dp  ( (108-66)/2 = 21dp
+    padding on each edge may be cropped by the launcher mask ).
+    We inset the PNG by 21dp on every side so the full image always shows.
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/ic_kerberos"
+        android:top="21dp"
+        android:bottom="21dp"
+        android:left="21dp"
+        android:right="21dp" />
+</layer-list>

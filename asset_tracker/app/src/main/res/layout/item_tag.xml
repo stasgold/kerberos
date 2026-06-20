@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="4dp"
+    app:cardBackgroundColor="@color/surface"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="0dp"
+    app:strokeColor="@color/divider"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="72dp"
+        android:orientation="horizontal">
+
+        <!-- Left colour strip -->
+        <View
+            android:id="@+id/viewColorSwatch"
+            android:layout_width="6dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="fill_vertical"
+            android:background="@color/divider" />
+
+        <!-- Tag name + address -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingStart="14dp"
+            android:paddingEnd="4dp"
+            android:paddingVertical="12dp">
+
+            <TextView
+                android:id="@+id/tvTagName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvTagAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="monospace"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+
+        <!-- RSSI -->
+        <TextView
+            android:id="@+id/tvTagRssi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingEnd="8dp"
+            android:fontFamily="monospace"
+            android:textSize="12sp"
+            android:textColor="@color/text_secondary" />
+
+        <!-- Rename -->
+        <ImageButton
+            android:id="@+id/btnRename"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Rename tag"
+            android:padding="8dp"
+            android:src="@drawable/ic_edit"
+            android:tint="@color/text_secondary" />
+
+        <!-- Color picker -->
+        <ImageButton
+            android:id="@+id/btnColor"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Set tag color"
+            android:padding="8dp"
+            android:src="@drawable/ic_palette"
+            android:tint="@color/text_secondary" />
+
+        <!-- Delete / remove -->
+        <ImageButton
+            android:id="@+id/btnDelete"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Remove tag"
+            android:padding="8dp"
+            android:src="@drawable/ic_delete"
+            android:tint="@color/text_secondary" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

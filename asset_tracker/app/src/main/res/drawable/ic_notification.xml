@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Small monochrome notification icon used in the foreground service
+    persistent notification. Must be a single-colour (alpha-channel only)
+    vector for correct rendering in the status bar.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Bluetooth-style radar / signal icon -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M12,2
+            C8.7,2 6,4.7 6,8
+            C6,11.3 12,20 12,20
+            C12,20 18,11.3 18,8
+            C18,4.7 15.3,2 12,2 Z
+            M12,10.5
+            A2.5,2.5 0 1 1 12.01,10.5 Z" />
+
+</vector>
