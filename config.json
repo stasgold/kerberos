@@ -1,0 +1,61 @@
+{
+  "tags": [
+    {
+      "name": "red",
+      "id": "D4:01:B3:58:73:85:D2:62:F3:74:38:AC:E8:93:77:A8",
+      "description": "Red Chipolo POP tag"
+    },
+    {
+      "name": "blue",
+      "id": "C2:30:B6:08:03:AE:8E:FC:66:4F:EF:89:46:04:EE:9E",
+      "description": "Blue Chipolo POP tag"
+    },
+    {
+      "name": "unknown_39:ae",
+      "id": "39:AE:4C:EC:90:BA:54:E3:CA:62:F0:2F:42:4F:13:C4",
+      "description": "Auto-discovered at 75:4A:B9:C8:D5:DA"
+    },
+    {
+      "name": "unknown_ea:35",
+      "id": "EA:35:7B:1C:7C:73:8F:76:75:40:7E:53:24:DA:0B:9D",
+      "description": "Auto-discovered at 75:4A:B9:C8:D5:DA"
+    },
+    {
+      "name": "unknown_b4:42",
+      "id": "B4:42:95:94:5D:F5:EA:AC:8F:54:DA:0F:1A:4C:0D:D2",
+      "description": "Auto-discovered at 75:4A:B9:C8:D5:DA"
+    },
+    {
+      "name": "unknown_22:5d",
+      "id": "22:5D:15:08:0F:5B:EF:42:29:E1:24:5E:6A:4F:7F:CF",
+      "description": "Auto-discovered at 75:4A:B9:C8:D5:DA"
+    },
+    {
+      "name": "unknown_6a:53",
+      "id": "6A:53:EA:05:00:D9:B7:0F:E2:62:58:11:51:87:41:E0",
+      "description": "Auto-discovered at 75:4A:B9:C8:D5:DA"
+    },
+    {
+      "name": "unknown_97:84",
+      "id": "97:84:F2:25:A9:BE:CB:DC:F5:16:43:8F:2D:79:B5:5B",
+      "description": "Auto-discovered at 75:4A:B9:C8:D5:DA"
+    },
+    {
+      "name": "unknown_4e:56",
+      "id": "4E:56:40:62:13:46:E6:92:FD:A8:BF:32:29:65:02:80",
+      "description": "Auto-discovered at 75:4A:B9:C8:D5:DA"
+    },
+    {
+      "name": "unknown_a8:5c",
+      "id": "A8:5C:71:AC:A8:10:9F:CF:F8:CB:97:A1:2B:66:46:B6",
+      "description": "Auto-discovered at 75:4A:B9:C8:D5:DA"
+    }
+  ],
+  "scan": {
+    "interval_seconds": 3,
+    "connection_timeout_seconds": 10,
+    "absent_threshold_seconds": 120
+  },
+  "identity_characteristic": "3e73c002-8ff8-4b17-b3ca-e6892ca6f268",
+  "log_file": "chipolo_monitor.log"
+}
