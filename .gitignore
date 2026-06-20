@@ -1,0 +1,37 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+*.egg-info/
+
+# BLE scan logs (raw data, can be large)
+ble_monitor.csv
+ble_monitor.csv.zip
+ble_monitor.log
+
+# Flutter / Dart
+chipolo_monitor_app/.dart_tool/
+chipolo_monitor_app/.flutter-plugins
+chipolo_monitor_app/.flutter-plugins-dependencies
+chipolo_monitor_app/build/
+chipolo_monitor_app/.packages
+chipolo_monitor_app/pubspec.lock
+
+# Android
+chipolo_monitor_app/android/.gradle/
+chipolo_monitor_app/android/local.properties
+chipolo_monitor_app/android/key.properties
+*.jks
+*.keystore
+
+# IDE
+.idea/
+*.iml
+.vscode/
